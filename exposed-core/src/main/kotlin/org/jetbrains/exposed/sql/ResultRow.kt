@@ -164,7 +164,7 @@ class ResultRow(
 
         /** Creates a [ResultRow] storing [columns] with their default or nullable values. */
         fun createAndFillDefaults(columns: List<Column<*>>): ResultRow =
-            ResultRow(columns.withIndex().associate { it.value to it.index }).apply {
+            ResultRow(columns.withIndex().associateBy({ it.value }, { it.index })).apply {
                 columns.forEach {
                     setInternal(it, it.defaultValueOrNotInitialized())
                 }
@@ -189,7 +189,7 @@ class ResultRow(
      * It solves the problem of "equal" expression with different column type (like the same column with original type and [EntityIDColumnType])
      */
     private class ResultRowCache {
-        private val values: MutableMap<Pair<Expression<*>, IColumnType<*>?>, Any?> = mutableMapOf()
+        private val values: MutableMap<Pair<Expression<*>, IColumnType<*>?>, Any?> = HashMap()
 
         /**
          * Wrapping function that accept the expression and target function.

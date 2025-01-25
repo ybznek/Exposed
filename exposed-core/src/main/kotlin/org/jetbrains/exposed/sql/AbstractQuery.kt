@@ -110,7 +110,7 @@ abstract class AbstractQuery<T : AbstractQuery<T>>(
                 }
             }
 
-        private val fieldsIndex = set.realFields.toSet().mapIndexed { index, expression -> expression to index }.toMap()
+        private val fieldsIndex = set.realFields.toSet().withIndex().associateBy({ it.value }, { it.index })
 
         init {
             hasNext = rs.next()
